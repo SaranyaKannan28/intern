@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salary Management - Accounts Management</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <div class="logo">
+                    <i class="fas fa-calculator"></i>
+                    <span>Accounts Management</span>
+                </div>
+                <nav class="nav-menu">
+                    <a href="#" class="nav-item">Dashboard</a>
+                    <a href="#" class="nav-item">Income</a>
+                    <a href="#" class="nav-item">Expenses</a>
+                    <a href="#" class="nav-item active">Salary</a>
+                    <a href="#" class="nav-item">Accounts Details</a>
+                </nav>
+            </div>
+            <div class="header-right">
+                <span class="welcome-text">Welcome, Santhosh</span>
+                <button class="logout-btn">Logout</button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1>Salary Management</h1>
+                <button class="add-salary-btn">Add Salary</button>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="stats-grid">
+                <div class="stat-card green">
+                    <div class="stat-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-label">Total Salary</div>
+                        <div class="stat-value">₹5,000</div>
+                        <div class="stat-subtitle">1 total records</div>
+                    </div>
+                </div>
+
+                <div class="stat-card blue">
+                    <div class="stat-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-label">Total Records</div>
+                        <div class="stat-value">1</div>
+                        <div class="stat-subtitle">All payment types</div>
+                    </div>
+                </div>
+
+                <div class="stat-card purple">
+                    <div class="stat-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-label">Shares</div>
+                        <div class="stat-value">0</div>
+                        <div class="stat-subtitle">Share payments</div>
+                    </div>
+                </div>
+
+                <div class="stat-card orange">
+                    <div class="stat-icon">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-label">Salary</div>
+                        <div class="stat-value">1</div>
+                        <div class="stat-subtitle">Salary payments</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <h2>Filter Options</h2>
+                <div class="filter-grid">
+                    <div class="filter-group">
+                        <label>Start Date</label>
+                        <input type="date" value="2025-07-01" class="filter-input">
+                    </div>
+                    <div class="filter-group">
+                        <label>End Date</label>
+                        <input type="date" value="2025-07-20" class="filter-input">
+                    </div>
+                    <div class="filter-group">
+                        <label>Payment Type</label>
+                        <select class="filter-select">
+                            <option>All Types</option>
+                            <option>Salary</option>
+                            <option>Bonus</option>
+                            <option>Commission</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Search</label>
+                        <input type="text" placeholder="Search by name, remarks..." class="filter-input search-input">
+                    </div>
+                </div>
+                <div class="filter-actions">
+                    <button class="clear-filters-btn">Clear Filters</button>
+                    <button class="apply-filters-btn">Apply Filters</button>
+                </div>
+            </div>
+
+            <!-- Salary Records Table -->
+            <div class="table-section">
+                <div class="table-header">
+                    <h2>Salary Records</h2>
+                    <button class="download-excel-btn">
+                        <i class="fas fa-download"></i>
+                        Download as Excel
+                    </button>
+                </div>
+                
+                <div class="table-container">
+                    <table class="salary-table">
+                        <thead>
+                            <tr>
+                                <th>PAYMENT TYPE</th>
+                                <th>AMOUNT</th>
+                                <th>PAYMENT TO WHOM</th>
+                                <th>SPENT DATE</th>
+                                <th>PAYMENT THROUGH</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                       <tbody id="salary-records-body">
+    <!-- Salary records will be injected here via JavaScript -->
+</tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Salary Modal -->
+    <div id="addSalaryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Salary Record</h3>
+                <span class="close">&times;</span>
+            </div>
+            <form class="salary-form">
+                <div class="form-group">
+                    <label>Payment Type</label>
+                    <select required>
+                        <option value="">Select Type</option>
+                        <option value="salary">Salary</option>
+                        <option value="bonus">Bonus</option>
+                        <option value="commission">Commission</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Amount</label>
+                    <input type="number" placeholder="Enter amount" required>
+                </div>
+                <div class="form-group">
+                    <label>Payment To Whom</label>
+                    <input type="text" placeholder="Enter recipient name" required>
+                </div>
+                <div class="form-group">
+                    <label>Spent Date</label>
+                    <input type="date" required>
+                </div>
+                <div class="form-group">
+                    <label>Payment Through</label>
+                    <select required>
+                        <option value="">Select Method</option>
+                        <option value="cash">Cash</option>
+                        <option value="bank">Bank Transfer</option>
+                        <option value="cheque">Cheque</option>
+                        <option value="online">Online Payment</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="cancel-btn">Cancel</button>
+                    <button type="submit" class="submit-btn">Add Salary</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
