@@ -25,7 +25,7 @@
                 </nav>
             </div>
             <div class="header-right">
-                <span class="welcome-text">Welcome </span>
+                <span class="welcome-text">Welcome Admin</span>
                 <button class="logout-btn">Logout</button>
             </div>
         </header>
@@ -35,7 +35,7 @@
             <!-- Page Header -->
             <div class="page-header">
                 <h1>Salary Management</h1>
-                <button class="add-salary-btn">Add Salary</button>
+                <button class="add-salary-btn" id="addSalaryBtn">Add Salary</button>
             </div>
 
             <!-- Statistics Cards -->
@@ -46,8 +46,8 @@
                     </div>
                     <div class="stat-content">
                         <div class="stat-label">Total Salary</div>
-                        <div class="stat-value">₹5,000</div>
-                        <div class="stat-subtitle">1 total records</div>
+                        <div class="stat-value" id="totalSalary">₹0</div>
+                        <div class="stat-subtitle" id="totalRecords">0 total records</div>
                     </div>
                 </div>
 
@@ -57,7 +57,7 @@
                     </div>
                     <div class="stat-content">
                         <div class="stat-label">Total Records</div>
-                        <div class="stat-value">1</div>
+                        <div class="stat-value" id="recordCount">0</div>
                         <div class="stat-subtitle">All payment types</div>
                     </div>
                 </div>
@@ -67,9 +67,9 @@
                         <i class="fas fa-chart-bar"></i>
                     </div>
                     <div class="stat-content">
-                        <div class="stat-label">Shares</div>
-                        <div class="stat-value">0</div>
-                        <div class="stat-subtitle">Share payments</div>
+                        <div class="stat-label">Average Amount</div>
+                        <div class="stat-value" id="averageAmount">₹0</div>
+                        <div class="stat-subtitle">Per payment</div>
                     </div>
                 </div>
 
@@ -78,9 +78,9 @@
                         <i class="fas fa-money-bill-wave"></i>
                     </div>
                     <div class="stat-content">
-                        <div class="stat-label">Salary</div>
-                        <div class="stat-value">1</div>
-                        <div class="stat-subtitle">Salary payments</div>
+                        <div class="stat-label">This Month</div>
+                        <div class="stat-value" id="monthlyTotal">₹0</div>
+                        <div class="stat-subtitle">Current month total</div>
                     </div>
                 </div>
             </div>
@@ -91,29 +91,29 @@
                 <div class="filter-grid">
                     <div class="filter-group">
                         <label>Start Date</label>
-                        <input type="date" value="2025-07-01" class="filter-input">
+                        <input type="date" id="startDate" class="filter-input">
                     </div>
                     <div class="filter-group">
                         <label>End Date</label>
-                        <input type="date" value="2025-07-20" class="filter-input">
+                        <input type="date" id="endDate" class="filter-input">
                     </div>
                     <div class="filter-group">
                         <label>Payment Type</label>
-                        <select class="filter-select">
-                            <option>All Types</option>
-                            <option>Salary</option>
-                            <option>Bonus</option>
-                            <option>Commission</option>
+                        <select id="paymentTypeFilter" class="filter-select">
+                            <option value="">All Types</option>
+                            <option value="salary">Salary</option>
+                            <option value="bonus">Bonus</option>
+                            <option value="commission">Commission</option>
                         </select>
                     </div>
                     <div class="filter-group">
                         <label>Search</label>
-                        <input type="text" placeholder="Search by name, remarks..." class="filter-input search-input">
+                        <input type="text" id="searchInput" placeholder="Search by name, remarks..." class="filter-input search-input">
                     </div>
                 </div>
                 <div class="filter-actions">
-                    <button class="clear-filters-btn">Clear Filters</button>
-                    <button class="apply-filters-btn">Apply Filters</button>
+                    <button class="clear-filters-btn" id="clearFiltersBtn">Clear Filters</button>
+                    <button class="apply-filters-btn" id="applyFiltersBtn">Apply Filters</button>
                 </div>
             </div>
 
@@ -121,7 +121,7 @@
             <div class="table-section">
                 <div class="table-header">
                     <h2>Salary Records</h2>
-                    <button class="download-excel-btn">
+                    <button class="download-excel-btn" id="downloadExcelBtn">
                         <i class="fas fa-download"></i>
                         Download as Excel
                     </button>
@@ -133,15 +133,18 @@
                             <tr>
                                 <th>PAYMENT TYPE</th>
                                 <th>AMOUNT</th>
-                                <th>PAYMENT TO WHOM</th>
-                                <th>SPENT DATE</th>
+                                <th>PAID TO</th>
+                                <th>PAID ON</th>
                                 <th>PAYMENT THROUGH</th>
+                                <th>START DATE</th>
+                                <th>END DATE</th>
+                                <th>REMARKS</th>
                                 <th>ACTIONS</th>
                             </tr>
                         </thead>
-                       <tbody id="salary-records-body">
-    <!-- Salary records will be injected here via JavaScript -->
-</tbody>
+                        <tbody id="salaryRecordsBody">
+                            <!-- Records will be populated here -->
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -153,46 +156,66 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3>Add New Salary Record</h3>
-                <span class="close">&times;</span>
+                <span class="close" id="closeModal">&times;</span>
             </div>
-            <form class="salary-form">
+            <form class="salary-form" id="salaryForm">
                 <div class="form-group">
-                    <label>Payment Type</label>
-                    <select required>
+                    <label>Payment Type *</label>
+                    <select name="type" required>
                         <option value="">Select Type</option>
                         <option value="salary">Salary</option>
                         <option value="bonus">Bonus</option>
                         <option value="commission">Commission</option>
+                        <option value="overtime">Overtime</option>
+                        <option value="allowance">Allowance</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Amount</label>
-                    <input type="number" placeholder="Enter amount" required>
+                    <label>Amount *</label>
+                    <input type="number" name="amount" step="0.01" placeholder="Enter amount" required>
                 </div>
                 <div class="form-group">
-                    <label>Payment To Whom</label>
-                    <input type="text" placeholder="Enter recipient name" required>
+                    <label>Paid To *</label>
+                    <input type="text" name="paidTo" placeholder="Enter recipient name" required>
                 </div>
                 <div class="form-group">
-                    <label>Spent Date</label>
-                    <input type="date" required>
+                    <label>Paid On *</label>
+                    <input type="date" name="paidOn" required>
                 </div>
                 <div class="form-group">
-                    <label>Payment Through</label>
-                    <select required>
+                    <label>Payment Through *</label>
+                    <select name="paidThrough" required>
                         <option value="">Select Method</option>
                         <option value="cash">Cash</option>
-                        <option value="bank">Bank Transfer</option>
+                        <option value="bank_transfer">Bank Transfer</option>
                         <option value="cheque">Cheque</option>
-                        <option value="online">Online Payment</option>
+                        <option value="online_payment">Online Payment</option>
+                        <option value="upi">UPI</option>
                     </select>
                 </div>
+                <div class="form-group">
+                    <label>Start Date *</label>
+                    <input type="date" name="startDate" required>
+                </div>
+                <div class="form-group">
+                    <label>End Date *</label>
+                    <input type="date" name="endDate" required>
+                </div>
+                <div class="form-group">
+                    <label>Remarks</label>
+                    <textarea name="remarks" placeholder="Enter any remarks or notes" rows="3"></textarea>
+                </div>
                 <div class="form-actions">
-                    <button type="button" class="cancel-btn">Cancel</button>
+                    <button type="button" class="cancel-btn" id="cancelBtn">Cancel</button>
                     <button type="submit" class="submit-btn">Add Salary</button>
                 </div>
             </form>
         </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+        <div class="spinner"></div>
     </div>
 
     <script src="main.js"></script>
